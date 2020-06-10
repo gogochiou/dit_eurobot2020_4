@@ -1,0 +1,20 @@
+<launch>
+   <node name = "main_no4" pkg = "main_loop" type="main_no4" output="screen">
+
+      <param  name="goal_pos_x" type="int" value="1000"/>
+      <param  name="goal_pos_y" type="int" value="1000"/>
+      <param  name="enemy1_x" type="int" value="1300"/>
+      <param  name="enemy1_y" type="int" value="1800"/>
+      <param  name="enemy2_x" type="int" value="5000"/>
+      <param  name="enemy2_y" type="int" value="5000"/>
+      <param  name="ally_x" type="int" value="1300"/>
+      <param  name="ally_y" type="int" value="1300"/>
+
+   </node>  
+   <node pkg="serial_port" type="serial_port_node" name="serial_port_node" output="log" respawn="true">
+    </node>
+   <!-- <node pkg="serial_port" type="serial_port_node_2" name="serial_port_node_2" output="log" respawn="true">
+    </node>  -->
+   <node pkg="main_loop" type="path_planning_" name="path_planning_" output="screen" respawn="true">
+   </node>
+</launch>
