@@ -1,4 +1,5 @@
 #! python
+#coding=utf-8
 """
 Set all actions, goals and current world states here!!
 this .py file is the only place you will need to change
@@ -8,8 +9,8 @@ from action import *
 
 #color = [1,1,1,1,1]  # 1 - red  0 - green
 color = []
-outside_cup_pos = [(200,600),(200,700),(200,800),(200,900),(200,1000)] #need camera
-inside_cup_pos = [(600,200),(700,200),(800,200),(900,200),(1000,200)]  #knowned
+outside_cup_pos = [(300,700),(300,800),(300,900),(300,1000),(300,1100)] #need camera
+inside_cup_pos = [(600,300),(700,300),(800,300),(900,300),(1000,300)]  #knowned
 redcount = 0
 greencount = 0
 run_point_count = 0
@@ -175,8 +176,9 @@ def put_fuc(): #放置
 # name, preconditions, effects, position, cost, degree, speed, mode, speed_mode_radius, number, iscup, iswait
 # 0-收納,風標,燈塔 ,1-放置 ,2- ,3- ,4- ,5-底盤
 def setting(mode,cup_color):
+	global redcount,greencount,color
 	demo_path =[]
-	global redcount,greencount
+	color = cup_color
 	for i in range(5) :
 		if color[i]==1 :
 			 redcount+=1
@@ -188,8 +190,8 @@ def setting(mode,cup_color):
 					color[i-k],color[i-k-1] = color[i-k-1],color[i-k]				
 					outside_cup_pos[i-k],outside_cup_pos[i-k-1] = outside_cup_pos[i-k-1],outside_cup_pos[i-k]
 	#find_point_order()
-	print(outside_cup_pos)
-	print(color)
+	#print(outside_cup_pos)
+	#print(color)
 	
 	if mode == 1:
 		#back to home
@@ -212,8 +214,8 @@ def setting(mode,cup_color):
 			#c3 = put_fuc()
 		
 
-		#demo_path1 = [grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc()]
-		demo_path = [put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc()]
+		demo_path = [grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc()]
+		#demo_path = [put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc()]
 		go_home_path = [c1]
 
 		#print(str(len(demo_path)))

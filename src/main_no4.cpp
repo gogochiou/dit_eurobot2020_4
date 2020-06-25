@@ -89,7 +89,7 @@ public:
 private:
     int goal_pos_x;
     int goal_pos_y;
-    int movement[7];
+    int movement[2];
     int speed;
     int angle;
     bool wait;
@@ -100,12 +100,13 @@ enum class RobotState {AT_POS, ON_THE_WAY, BLOCKED};
 
 int movement_from_goap[2];
 
-int rx0;
-int rx1;
+int rx0 =0;
+int rx1 =0;
 
-int r0;
-int r1;
-int r2;
+int r0 =0;
+int r1 =0;
+int r2 =0;
+int r3 =0;
 
 int my_pos_x=400;
 int my_pos_y=400;
@@ -114,9 +115,9 @@ int my_degree=0;
 int switch_mode_distance = 4000000;//square
 int distance_square = 0;
 
-int mode0 = 0
-int mode1 = 0
-int execute_status = 0
+int mode0 = 0;
+int mode1 = 0;
+int execute_status = 0;
 
 void sub_class::ST1_sub_callback(const std_msgs::Int32MultiArray::ConstPtr& msg){
 	my_pos_x = msg->data[0] ;
@@ -157,7 +158,7 @@ int main(int argc, char **argv){
 	sub_class sub;
 	ros::NodeHandle nh;
 	ros::ServiceClient client_path = nh.serviceClient<main_loop::path>("path_plan");
-	ros::ServiceClient client_goap = n.serviceClient<main_loop::goap_>("goap_test_v1");
+	ros::ServiceClient client_goap = nh.serviceClient<main_loop::goap_>("goap_test_v1");
 
 	//初始值
 	int margin = 50;
@@ -170,9 +171,24 @@ int main(int argc, char **argv){
 	//在main裡定義的topic和service所需的傳輸格式需由此先宣告一次
 	main_loop::path path_srv;
 	main_loop::goap_ goap_srv;
+	/*mission,goap*/
+	/*goap_srv.request.pos={400,400};
+	goap_srv.request.time = 0.0;
+	goap_srv.request.cup_color.push_back(0); // 1 - red , 0 - green
+	goap_srv.request.cup_color.push_back(1); 
+	goap_srv.request.cup_color.push_back(0);
+	goap_srv.request.cup_color.push_back(1); 
+	goap_srv.request.cup_color.push_back(0); 
+	goap_srv.request.north_or_south = 0 ; 
+	goap_srv.request.action_done = false;
+	goap_srv.request.pos.push_back(400);
+	goap_srv.request.pos.push_back(400); 
+    goap_srv.request.my_degree = 0;*/
+	
 
 	while(ros::ok()){
-
+		
+		
 		/*path*/
 		path_srv.request.my_pos_x = my_pos_x;
 		path_srv.request.my_pos_y = my_pos_y;
@@ -205,17 +221,22 @@ int main(int argc, char **argv){
 
 
 		/*mission,goap*/
-		goap_srv.request.time = 0;
-        goap_srv.request.cup_color.push_back(1); // 1 - red , 0 - green
+		goap_srv.request.pos={};
+		goap_srv.request.time = 0.0;
+        goap_srv.request.cup_color.push_back(0); // 1 - red , 0 - green
         goap_srv.request.cup_color.push_back(1); 
-        goap_srv.request.cup_color.push_back(1);
+        goap_srv.request.cup_color.push_back(0);
         goap_srv.request.cup_color.push_back(1); 
-        goap_srv.request.cup_color.push_back(1); 
+        goap_srv.request.cup_color.push_back(0); 
         goap_srv.request.north_or_south = 0 ; 
-        goap_srv.request.action_done = action_done;
-        goap_srv.request.pos.push_back(my_pos_x);
-        goap_srv.request.pos.push_back(my_pos_y); 
+        goap_srv.request.action_done = false;
+        goap_srv.request.pos.push_back(400);
+        goap_srv.request.pos.push_back(400); 
         goap_srv.request.my_degree = my_degree;
+        goap_srv.request.mission_name = "hi";
+        ROS_INFO("%d",goap_srv.request.action_done);
+        
+        
 		if(client_goap.call(goap_srv)){  
             movement_from_goap[0]=goap_srv.response.ST2[0];
             movement_from_goap[1]=goap_srv.response.ST2[1];
@@ -224,12 +245,17 @@ int main(int argc, char **argv){
             path_srv.request.goal_pos_y = goap_srv.response.pos[1];
         }
 		else{
-            ROS_ERROR("Failed to call goap_test");
+            ROS_INFO("Failed to call goap_test");
         } 
+        
 		goap_srv.request.mission_name = goap_srv.response.mission_name ;
-        goap_srv.request.mission_child_name = goap_srv.response.mission_child_name ;
+        //goap_srv.request.mission_child_name = goap_srv.response.mission_child_name ;
 
-		//將goap所需的資料存入action          
+		//將goap所需的資料存入action
+		ROS_INFO("%d",goap_srv.response.pos[0]);
+		ROS_INFO("%d",goap_srv.response.pos[1]);
+		ROS_INFO("%d",goap_srv.response.ST2[0]);
+		ROS_INFO("%d",goap_srv.response.ST2[1]);           
         action act(goap_srv.response.pos[0], goap_srv.response.pos[1], movement_from_goap, goap_srv.response.degree, goap_srv.response.speed, goap_srv.response.is_wait, goap_srv.response.mode);
         int desire_pos_x = act.PosX();
         int desire_pos_y = act.PosY();
@@ -262,9 +288,9 @@ int main(int argc, char **argv){
 			}
 			case RobotState::ON_THE_WAY:{
 				if(client_path.call(path_srv)){
-					ROS_INFO("%d", path_srv.request.goal_pos_x);
-					ROS_INFO("%d", path_srv.request.goal_pos_y);
-					ROS_INFO("%lf", path_srv.response.degree); //float
+					//ROS_INFO("%d", path_srv.request.goal_pos_x);
+					//ROS_INFO("%d", path_srv.request.goal_pos_y);
+					//ROS_INFO("%lf", path_srv.response.degree); //float
 				}
 				else{
 					ROS_ERROR("Failed to call path_plan");
