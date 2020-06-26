@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  eurobot_gui
 )
 
 ## System dependencies are found with CMake's conventions
@@ -69,6 +70,7 @@ add_service_files(
 	goap_demo.srv
 	ns.srv
 	cup.srv
+	set_strategy.srv
 )
 
 ## Generate actions in the 'action' folder

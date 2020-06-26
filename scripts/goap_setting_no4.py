@@ -115,29 +115,29 @@ def put_fuc(): #放置
 				return Action('red_left_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-5),500), 270, 150, 0, 0, 0, 1, 0, True)
 		elif greencount == 3 :
 			if put_cup_count <= 4 :
-				return Action('green_right_put', [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('green_right_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
 			elif 4 < put_cup_count <= 5 :
-				return Action('green_mid_put', [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('green_mid_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
 			elif 5 < put_cup_count <= 7 :
-				return Action('red_mid_put', [], [cup_number], [], (300+100*(put_cup_count-6),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_mid_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-6),500), 270, 150, 0, 0, 0, 1, 0, True)
 			else:
-				return Action('red_left_put', [], [cup_number], [], (300+100*(put_cup_count-6),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_left_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-6),500), 270, 150, 0, 0, 0, 1, 0, True)
 		elif greencount == 4 :
 			if put_cup_count <= 4 :
-				return Action('green_right_put', [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('green_right_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
 			elif 4 < put_cup_count <= 6 :
-				return Action('green_mid_put', [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('green_mid_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
 			elif 6 < put_cup_count <= 7 :
-				return Action('red_mid_put', [], [cup_number], [], (300+100*(put_cup_count-7),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_mid_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-7),500), 270, 150, 0, 0, 0, 1, 0, True)
 			else:
-				return Action('red_left_put', [], [cup_number], [], (300+100*(put_cup_count-7),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_left_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-7),500), 270, 150, 0, 0, 0, 1, 0, True)
 		elif greencount == 5 :
 			if put_cup_count <= 4 :
-				return Action('green_right_put', [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('green_right_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
 			elif 4 < put_cup_count <= 7 :
-				return Action('green_mid_put', [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('green_mid_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
 			else:
-				return Action('red_left_put', [], [cup_number], [], (300+100*(put_cup_count-8),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_left_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-8),500), 270, 150, 0, 0, 0, 1, 0, True)
 '''def take_out_fuc():
 	global greencount,put_cup_count
 	if greencount == 0 :
@@ -174,7 +174,7 @@ def put_fuc(): #放置
 	return c11'''
 
 # name, preconditions, effects, position, cost, degree, speed, mode, speed_mode_radius, number, iscup, iswait
-# 0-收納,風標,燈塔 ,1-放置 ,2- ,3- ,4- ,5-底盤
+# 0-收納,風標,燈塔 ,1-放置 ,2- ,3- ,4- ,0-0 reset
 def setting(mode,cup_color):
 	global redcount,greencount,color
 	demo_path =[]
@@ -195,12 +195,12 @@ def setting(mode,cup_color):
 	
 	if mode == 1:
 		#back to home
-		c1 = Action('go_home',[], [], [], (1650, 865), 270, 150, 0, 0, 0, 5, 0, True)
+		c1 = Action('go_home',[], [0], [], (1650, 865), 270, 150, 0, 0, 0, 0, 0, True)
 
 		#grab_cup
 			#c2 = grab_fuc()
-		c8 = Action('goto_outside_point',[], [], [], (1650, 865), 270, 150, 0, 0, 0, 5, 0, True)
-		c9 = Action('goto_inside_point',[], [], [], (1650, 865), 270, 150, 0, 0, 0, 5, 0, True)
+		c8 = Action('goto_outside_point',[], [], [], (1650, 865), 270, 150, 0, 0, 0, 0, 0, True)
+		c9 = Action('goto_inside_point',[], [], [], (1650, 865), 270, 150, 0, 0, 0, 0, 0, True)
 	
 		#lighthouse
 		c4 = Action('hand_up_1',[], [30], [], (1650, 865), 270, 150, 0, 0, 0, 0, 0, True) 
