@@ -46,22 +46,22 @@ def grab_fuc(): #收納mode
 	if run_point_count <=5:
 		if run_point_count <= redcount :
 			if run_point_count <= 3 :
-				return Action('grab_reb_in_mid', [], [2], [], outside_cup_pos[run_point_count-1], 270, 150, 0, 0, 0, 0, 0, True)
+				return Action('grab_reb_in_mid' + str(run_point_count), [], [2], [], outside_cup_pos[run_point_count-1], 270, 150, 0, 0, 0, 0, 0, True)
 			elif 3 < run_point_count <= 5 :
-				return Action('grab_red_in_right', [], [1], [], outside_cup_pos[run_point_count-1], 270, 150, 0, 0, 0, 0, 0, True)
+				return Action('grab_red_in_right' + str(run_point_count), [], [1], [], outside_cup_pos[run_point_count-1], 270, 150, 0, 0, 0, 0, 0, True)
 		else :
 			if run_point_count <= 3 :
-				return Action('grab_green_in_mid', [], [2], [], outside_cup_pos[run_point_count-1], 270, 150, 0, 0, 0, 0, 0, True)
+				return Action('grab_green_in_mid' + str(run_point_count), [], [2], [], outside_cup_pos[run_point_count-1], 270, 150, 0, 0, 0, 0, 0, True)
 			elif 3 < run_point_count <= 5 :
-				return Action('grab_green_in_right', [], [1], [], outside_cup_pos[run_point_count-1], 270, 150, 0, 0, 0, 0, 0, True)		
+				return Action('grab_green_in_right' + str(run_point_count), [], [1], [], outside_cup_pos[run_point_count-1], 270, 150, 0, 0, 0, 0, 0, True)		
 	else:
 		if run_point_count <= 8 :
-			return Action('grab_red_in_left', [], [3], [], inside_cup_pos[run_point_count-6], 270, 150, 0, 0, 0, 0, 0, True)
+			return Action('grab_red_in_left' + str(run_point_count), [], [3], [], inside_cup_pos[run_point_count-6], 270, 150, 0, 0, 0, 0, 0, True)
 		else :
 			if run_point_count ==9  :
-				return Action('grab_green_in_right', [], [1], [], inside_cup_pos[run_point_count-6], 270, 150, 0, 0, 0, 0, 0, True)
+				return Action('grab_green_in_right' + str(run_point_count), [], [1], [], inside_cup_pos[run_point_count-6], 270, 150, 0, 0, 0, 0, 0, True)
 			else:
-				return Action('grab_green_in_hold', [], [10], [], inside_cup_pos[run_point_count-6], 270, 150, 0, 0, 0, 0, 0, True)
+				return Action('grab_green_in_hold' + str(run_point_count), [], [10], [], inside_cup_pos[run_point_count-6], 270, 150, 0, 0, 0, 0, 0, True)
 '''def take_in_fuc():
 	global redcount,run_point_count
 	if run_point_count <= 3 :
@@ -90,29 +90,29 @@ def put_fuc(): #放置
 			cup_number = 3+(put_cup_count-8)*3
 		if greencount == 0 :
 			if put_cup_count <= 2 :
-				return Action('green_right_put', [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('green_right_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
 			elif 2 < put_cup_count <= 4 :
-				return Action('red_right_put', [], [cup_number], [], (300+100*(put_cup_count-3),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_right_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-3),500), 270, 150, 0, 0, 0, 1, 0, True)
 			elif 4 < put_cup_count <= 7 :
-				return Action('red_mid_put', [], [cup_number], [], (300+100*(put_cup_count-3),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_mid_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-3),500), 270, 150, 0, 0, 0, 1, 0, True)
 			else:
-				return Action('red_left_put', [], [cup_number], [], (300+100*(put_cup_count-3),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_left_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-3),500), 270, 150, 0, 0, 0, 1, 0, True)
 		elif greencount == 1 :
 			if put_cup_count <= 3 :
-				return Action('green_right_put', [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('green_right_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
 			elif 3 < put_cup_count <= 4 :
-				return Action('red_right_put', [], [cup_number], [], (300+100*(put_cup_count-4),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_right_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-4),500), 270, 150, 0, 0, 0, 1, 0, True)
 			elif 4 < put_cup_count <= 7 :
-				return Action('red_mid_put', [], [cup_number], [], (300+100*(put_cup_count-4),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_mid_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-4),500), 270, 150, 0, 0, 0, 1, 0, True)
 			else:
-				return Action('red_left_put', [], [cup_number], [], (300+100*(put_cup_count-4),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_left_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-4),500), 270, 150, 0, 0, 0, 1, 0, True)
 		elif greencount == 2 :
 			if put_cup_count <= 4 :
-				return Action('green_right_put', [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('green_right_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)
 			elif 4 < put_cup_count <= 7 :
-				return Action('red_mid_put', [], [cup_number], [], (300+100*(put_cup_count-5),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_mid_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-5),500), 270, 150, 0, 0, 0, 1, 0, True)
 			else:
-				return Action('red_left_put', [], [cup_number], [], (300+100*(put_cup_count-5),500), 270, 150, 0, 0, 0, 1, 0, True)
+				return Action('red_left_put' + str(put_cup_count), [], [cup_number], [], (300+100*(put_cup_count-5),500), 270, 150, 0, 0, 0, 1, 0, True)
 		elif greencount == 3 :
 			if put_cup_count <= 4 :
 				return Action('green_right_put', [], [cup_number], [], (300+100*(put_cup_count-1),200), 270, 150, 0, 0, 0, 1, 0, True)

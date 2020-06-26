@@ -19,6 +19,7 @@
 #include <cmath>
 #include <stdlib.h>
 
+
 using namespace std;
 
 class sub_class{
@@ -119,6 +120,8 @@ int mode0 = 0;
 int mode1 = 0;
 int execute_status = 0;
 
+int count1 = 0;
+
 void sub_class::ST1_sub_callback(const std_msgs::Int32MultiArray::ConstPtr& msg){
 	my_pos_x = msg->data[0] ;
 	my_pos_y = msg->data[1] ;
@@ -130,6 +133,7 @@ void sub_class::ST2_sub_callback(const std_msgs::Int32MultiArray::ConstPtr& msg)
 	mode0 = msg->data[0] ;
 	mode1 = msg->data[1] ; 
 	execute_status = msg->data[2] ;
+	ROS_INFO("get data2");
 	//reserved = msg->data[3] ; 
 	//CRC = msg->data[4]  
 }
@@ -154,7 +158,9 @@ bool at_pos(int x, int y, int deg, int c_x, int c_y, int c_deg, int m, int angle
 int main(int argc, char **argv){
 
 	ros::init(argc, argv, "main_no4");
-
+	/*ros::Time begin_time ;
+    ros::Time now_time ;
+	begin_time =ros::Time::now();*/
 	sub_class sub;
 	ros::NodeHandle nh;
 	ros::ServiceClient client_path = nh.serviceClient<main_loop::path>("path_plan");
@@ -187,7 +193,7 @@ int main(int argc, char **argv){
 	
 
 	while(ros::ok()){
-		
+		//now_time =ros::Time::now();
 		
 		/*path*/
 		path_srv.request.my_pos_x = my_pos_x;
@@ -221,6 +227,8 @@ int main(int argc, char **argv){
 
 
 		/*mission,goap*/
+		count1 ++ ;
+		
 		goap_srv.request.pos={};
 		goap_srv.request.time = 0.0;
         goap_srv.request.cup_color.push_back(0); // 1 - red , 0 - green
@@ -229,13 +237,15 @@ int main(int argc, char **argv){
         goap_srv.request.cup_color.push_back(1); 
         goap_srv.request.cup_color.push_back(0); 
         goap_srv.request.north_or_south = 0 ; 
-        goap_srv.request.action_done = false;
-        goap_srv.request.pos.push_back(400);
-        goap_srv.request.pos.push_back(400); 
+        goap_srv.request.action_done = action_done;
+        goap_srv.request.pos.push_back(my_pos_x);
+        goap_srv.request.pos.push_back(my_pos_y); 
         goap_srv.request.my_degree = my_degree;
-        goap_srv.request.mission_name = "hi";
-        ROS_INFO("%d",goap_srv.request.action_done);
-        
+        //goap_srv.request.mission_name = "hi";
+        //ROS_INFO("%d",goap_srv.request.action_done);
+        if(action_done){
+			action_done = false;
+		}
         
 		if(client_goap.call(goap_srv)){  
             movement_from_goap[0]=goap_srv.response.ST2[0];
@@ -277,12 +287,16 @@ int main(int argc, char **argv){
 			case RobotState::AT_POS:{
 				if(desire_movement[0] != -1){
 					rx0 = desire_movement[0];
+					ROS_INFO("mission1 : %d",desire_movement[0]);
 				}
 				if(desire_movement[1] != -1){
 					rx1 = desire_movement[1];
+					ROS_INFO("mission1 : %d",desire_movement[1]);
 				}
-				if(execute_status == 1){
+				if(execute_status == 1 && count1 >100 && at_pos(my_pos_x, my_pos_y, my_degree,  desire_pos_x, desire_pos_y, desire_angle, margin, angle_margin)){
 					action_done = true;
+					ROS_INFO("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+					count1 = 0;
 				}
 				break;
 			}

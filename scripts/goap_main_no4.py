@@ -2,6 +2,7 @@
 #coding=utf-8
 from main_loop.srv import *
 import rospy
+import math
 from goap_setting_no4 import *
 
 
@@ -33,13 +34,15 @@ class mymain:  #main輸入與輸出參數需在此class定義
 	output_name = "start"        # --->
 	#output_child_name = "start"  # --->
 
-go_home_time = 4000
+go_home_time = 60
 path_done = False
 north = 1
 south = 2
 north_position = (900, 300)
 south_position = (1800, 300)
-count = 0;
+count = 0
+call_setting = 0
+lala = 1
 #demo_path, go_home_path = setting(1, mymain.cup_color)
 
 
@@ -54,15 +57,23 @@ def handle_return_to_main(req):  #main輸入參數與獲得結果存取處(servi
 	mymain.action_done = req.action_done  # <----
 	mymain.my_pos = (req.pos[0],req.pos[1])
 	mymain.cup_color = [req.cup_color[0],req.cup_color[1],req.cup_color[2],req.cup_color[3],req.cup_color[4]]
-	rospy.loginfo(mymain.cup_color)
-	rospy.loginfo('hi')
+	#rospy.loginfo(mymain.cup_color)
+	#rospy.loginfo('hi')
+	rospy.loginfo(mymain.action_done)
 	mymain.time = req.time 
 	mymain.my_degree = req.my_degree 
 	mymain.north_or_south = req.north_or_south 
 	mymain.name = req.mission_name
+	rospy.loginfo(mymain.name)
 	#mymain.child_name = req.mission_child_name
 	count = 2
 	return [mymain.output_speed, mymain.output_mode, mymain.output_degree, mymain.output_position, mymain.output, mymain.output_wait, mymain.output_name ] #mymain.output_child_name]
+	
+'''def at_pos(x1, y1, x2, y2):
+	if abs(x1 - x2) < 50 and abs(y1 - y2) < 50 :
+		return True
+	else:
+		return False'''
 
 def goap_server():
 	
@@ -70,6 +81,7 @@ def goap_server():
 	global demo_path
 	global give_next_action
 	global count
+	global lala
 	
 	#定義goap service name:
 	rospy.init_node('goap_main_no4')
@@ -80,43 +92,46 @@ def goap_server():
 	#goap的loop放這:
 	while count != 2:
 		print("lala")
-		
-	demo_path, go_home_path = setting(1, mymain.cup_color)
-		 
-	while True:
-		path_done = False
-		if mymain.time >= go_home_time and go_home_flag == False:
-			demo_path[:] = []
-			for action in go_home_path:
-				if mymain.north_or_south == north:
-					action.position = north_position
-				elif mymain.north_or_south == south:
-					action.position = south_position
-			demo_path = go_home_path
-			go_home_flag = True
 
-		path = demo_path[0]
-		#mymain.output_child_name = path.name 
-		mymain.output_name = path.name
-		mymain.output = output_processor(path)
-		mymain.output_degree = path.degree
-		mymain.output_speed = path.speed
-		mymain.output_mode = path.mode
-		mymain.output_position = path.position
-		mymain.output_wait = path.wait
-		#print(str(len(demo_path)))
+	if lala == 1 :
+		demo_path, go_home_path = setting(1, mymain.cup_color)
+		lala += 1
+	
+	if lala == 2 : 
+		while True:
+			path_done = False
+			if mymain.time >= go_home_time and go_home_flag == False:
+				demo_path[:] = []
+				for action in go_home_path:
+					if mymain.north_or_south == north:
+						action.position = north_position
+					elif mymain.north_or_south == south:
+						action.position = south_position
+				demo_path = go_home_path
+				go_home_flag = True
 
-		if mymain.action_done is True and demo_path[0].name == mymain.name :
-
-			#print(path.name)
-			#print(path.position)
-			#print(path.degree)
-			#print(mymain.output)
-			#print()
-			if len(demo_path) > 1:
-				demo_path.remove(demo_path[0])
-
-			
+			path = demo_path[0]
+			#mymain.output_child_name = path.name 
+			mymain.output_name = path.name
+			mymain.output = output_processor(path)
+			mymain.output_degree = path.degree
+			mymain.output_speed = path.speed
+			mymain.output_mode = path.mode
+			mymain.output_position = path.position
+			mymain.output_wait = path.wait
+			'''for i in range(10) :
+				print(str(len(demo_path)))'''
+				
+			#at_pos(demo_path.position[0],demo_path.position[1], mymain.my_pos[0], mymain.my_pos[0]) 
+			if mymain.action_done is True and demo_path[0].name == mymain.name:
+				print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+				#print(path.name)
+				#print(path.position)
+				#print(path.degree)
+				#print(mymain.output)
+				#print()
+				if len(demo_path) > 1:
+					demo_path.remove(demo_path[0])	
 		
 if __name__ == "__main__":
 	goap_server()
