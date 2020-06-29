@@ -203,7 +203,8 @@ def setting(mode,cup_color):
 		c9 = Action('goto_inside_point',[], [], [], (1650, 865), 270, 150, 0, 0, 0, 0, 0, True)
 	
 		#lighthouse
-		c4 = Action('lighthouse_push',[], [4], [], (100, 2750), 270, 150, 0, 0, 0, 0, 0, True)
+		c4 = Action('lighthouse_push',[], [4], [], (150, 2750), 270, 150, 0, 0, 0, 0, 0, True)
+		#c4 = Action('lighthouse_push',[], [4], [], (800, 800), 270, 150, 0, 0, 0, 0, 0, True)
 
 		#Weathervane
 		c6 = Action('weathervane_push',[], [11], [], (1955, 2800), 270, 150, 0, 0, 0, 0, 0, True) 
@@ -217,7 +218,7 @@ def setting(mode,cup_color):
 
 		#demo_path = [grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc()]
 		#demo_path = [put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc()]
-		demo_path = [c6,c4,c7]
+		demo_path = [c4,c6,c7]
 		go_home_path = [c1]
 
 		#print(str(len(demo_path)))

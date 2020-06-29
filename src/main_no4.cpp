@@ -121,8 +121,8 @@ int r1 =0;
 int r2 =0;
 int r3 =0;
 
-int my_pos_x=400;
-int my_pos_y=400;
+int my_pos_x=900;
+int my_pos_y=2700;
 int my_degree=0;
 
 int switch_mode_distance = 4000000;//square
@@ -172,14 +172,14 @@ void sub_class::ST1_sub_callback(const std_msgs::Int32MultiArray::ConstPtr& msg)
 	my_pos_x = msg->data[0] ;
 	my_pos_y = msg->data[1] ;
 	my_degree = msg->data[2] ;
-	ROS_INFO("get data");
+	//ROS_INFO("get data");
 }
 
 void sub_class::ST2_sub_callback(const std_msgs::Int32MultiArray::ConstPtr& msg){
 	mode0 = msg->data[0] ;
 	mode1 = msg->data[1] ; 
 	execute_status = msg->data[2] ;
-	ROS_INFO("get data2");
+	//ROS_INFO("get data2");
 	//reserved = msg->data[3] ; 
 	//CRC = msg->data[4]  
 }
@@ -244,7 +244,7 @@ int main(int argc, char **argv){
 	while(ros::ok()){
 		fordelay++;
 		Status stat;
-		if(status_fromgui.data == 4 && fordelay > 1000000){
+		if(status_fromgui.data == 4 && fordelay > 500000){
 			stat  = static_cast<Status>(5);
 			status_fromgui.data = 5;
 		}
@@ -402,6 +402,8 @@ int main(int argc, char **argv){
 						break;
 					}
 					case RobotState::ON_THE_WAY:{
+						rx0 = 0;
+						rx1 = 0;
 						if(client_path.call(path_srv)){
 							ROS_INFO("%d", path_srv.request.goal_pos_x);
 							ROS_INFO("%d", path_srv.request.goal_pos_y);
@@ -431,6 +433,8 @@ int main(int argc, char **argv){
 							r1 = desire_speed;
 							r2 = my_degree;
 							r3 = 0;
+							ROS_INFO("%d", r1);
+							ROS_INFO("%d", r2);
 							/*for_st1.data.push_back(0x3000);                         //speed mode
 							for_st1.data.push_back(200);                            //speed
 							for_st1.data.push_back(path_srv.response.degree);       //degree

@@ -3,12 +3,12 @@
 
       <!-- <param  name="goal_pos_x" type="int" value="1000"/>
       <param  name="goal_pos_y" type="int" value="1000"/> -->
-      <param  name="enemy1_x" type="int" value="1300"/>
-      <param  name="enemy1_y" type="int" value="1800"/>
+      <param  name="enemy1_x" type="int" value="8000"/>
+      <param  name="enemy1_y" type="int" value="8000"/>
       <param  name="enemy2_x" type="int" value="5000"/>
       <param  name="enemy2_y" type="int" value="5000"/>
-      <param  name="ally_x" type="int" value="1300"/>
-      <param  name="ally_y" type="int" value="1300"/>
+      <param  name="ally_x" type="int" value="50000"/>
+      <param  name="ally_y" type="int" value="50000"/>
 
    </node>  
    <!-- <node pkg="serial_port" type="serial_port_node" name="serial_port_node" output="log" respawn="true">

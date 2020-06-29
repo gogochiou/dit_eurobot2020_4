@@ -668,22 +668,25 @@ int big_to_small_maze(int big){
 bool add(main_loop::path::Request  &req,
          main_loop::path::Response &res)
 {
-	
+
     int maze[mazeSizeX][mazeSizeY];
     build_maze(maze); 
     int obstacle_a[2] = {big_to_small_maze(req.enemy1_x),big_to_small_maze(req.enemy1_y)};//<---from camera
     int obstacle_b[2] = {big_to_small_maze(req.enemy2_x),big_to_small_maze(req.enemy2_y)};//<---from camera
     int obstacle_c[2] = {big_to_small_maze(req.ally_x),big_to_small_maze(req.ally_y)};//<---from camera   
     int start_pos[2] = {big_to_small_maze(req.my_pos_x),big_to_small_maze(req.my_pos_y)};//<---my_pos
+    ROS_INFO("start x : %d",start_pos[0]);
+    ROS_INFO("start y : %d",start_pos[1]);
     int goal_pos[2] = {big_to_small_maze(req.goal_pos_x),big_to_small_maze(req.goal_pos_y)};//<---goap 
+    ROS_INFO("goal x : %d",goal_pos[0]);
+    ROS_INFO("goal y : %d",goal_pos[1]);
     bool blocked = false;
     bool is_blocked_a = build_obstacles(obstacle_a, robotSize, maze, 0, goal_pos);
     bool is_blocked_b = build_obstacles(obstacle_b, robotSize, maze, 0, goal_pos);
     bool is_blocked_c = build_obstacles(obstacle_c, robotSize, maze, 0, goal_pos);
     vector<PosNode> a = AStar(start_pos, goal_pos, maze);
-    ROS_INFO("Fuck GogoChiu");
-    vector<PosNode> b= bresenhams_line_alg(a, maze); 
-	//return true;
+    vector<PosNode> b = bresenhams_line_alg(a, maze); 
+
     res.next_pos_x = get_x(b)*50 ;//--->for big map 
     res.next_pos_y = get_y(b)*50 ;//--->for big map
     cout << " degree: " << move_degree(start_pos, b) << "\n";//--->output degree!!
