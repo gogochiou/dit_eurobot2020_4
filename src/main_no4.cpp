@@ -317,7 +317,7 @@ int main(int argc, char **argv){
 					count_time =1;
 				}
 				now_time =ros::Time::now();
-				ROS_INFO("%f", (now_time - begin_time).toSec());
+				//ROS_INFO("%f", (now_time - begin_time).toSec());
 				
 				/*path*/
 				path_srv.request.my_pos_x = my_pos_x;

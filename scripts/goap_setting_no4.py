@@ -9,8 +9,8 @@ from action import *
 
 #color = [1,1,1,1,1]  # 1 - red  0 - green
 color = []
-outside_cup_pos = [(300,700),(300,800),(300,900),(300,1000),(300,1100)] #need camera
-inside_cup_pos = [(600,300),(700,300),(800,300),(900,300),(1000,300)]  #knowned
+outside_cup_pos = [(100,2000),(100,2075),(100,2150),(100,2225),(100,2300)] #need camera
+inside_cup_pos = [(1450,2900),(1525,2900),(1600,2900),(1675,2900),(1750,2900)]  #knowned
 redcount = 0
 greencount = 0
 run_point_count = 0
@@ -198,24 +198,26 @@ def setting(mode,cup_color):
 		c1 = Action('go_home',[], [0], [], (1650, 865), 270, 150, 0, 0, 0, 0, 0, True)
 
 		#grab_cup
-			#c2 = grab_fuc()
+		#c2 = grab_fuc()
 		c8 = Action('goto_outside_point',[], [], [], (1650, 865), 270, 150, 0, 0, 0, 0, 0, True)
 		c9 = Action('goto_inside_point',[], [], [], (1650, 865), 270, 150, 0, 0, 0, 0, 0, True)
 	
 		#lighthouse
-		c4 = Action('hand_up_1',[], [30], [], (1650, 865), 270, 150, 0, 0, 0, 0, 0, True) 
-		#c5 = Action('hand_down_1',[], [0], (1650, 865), 3, 270, 150, 1, 15, 5, False, True) 
+		c4 = Action('lighthouse_push',[], [4], [], (100, 2750), 270, 150, 0, 0, 0, 0, 0, True)
 
 		#Weathervane
-		c6 = Action('hand_up_2',[], [20], [], (1650, 865), 270, 150, 0, 0, 0, 0, 0, True) 
-		#c7 = Action('hand_down_2',[], [0], (1650, 865), 3, 270, 150, 1, 15, 5, False, True) #change?
+		c6 = Action('weathervane_push',[], [11], [], (1955, 2800), 270, 150, 0, 0, 0, 0, 0, True) 
+
+		#flag
+		c7 =  Action('flag',[], [12], [], (1650, 865), 270, 150, 0, 0, 0, 0, 0, True)
 		
 		#take_out_cup
-			#c3 = put_fuc()
+		#c3 = put_fuc()
 		
 
-		demo_path = [grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc()]
+		#demo_path = [grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc()]
 		#demo_path = [put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc()]
+		demo_path = [c6,c4,c7]
 		go_home_path = [c1]
 
 		#print(str(len(demo_path)))
