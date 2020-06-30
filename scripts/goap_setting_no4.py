@@ -203,31 +203,23 @@ def setting(mode,cup_color):
 		c9 = Action('goto_inside_point',[], [], [], (1650, 865), 270, 150, 0, 0, 0, 0, 0, True)
 	
 		#lighthouse
-		#c4 = Action('lighthouse_push',[], [4], [], (150, 2750), 270, 150, 0, 0, 0, 0, 0, True)
-		c4 = Action('lighthouse_push1',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		c5 = Action('lighthouse_walk',[], [0], [], (400, 900), 90, 150, 0, 0, 0, 0, 0, True)
-		
-		c20 = Action('lighthouse_push2',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		c21 = Action('lighthouse_push3',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		c22 = Action('lighthouse_push4',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		c23 = Action('lighthouse_push5',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		c24 = Action('lighthouse_push6',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		c25 = Action('lighthouse_push7',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		c26 = Action('lighthouse_push8',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		c27 = Action('lighthouse_push9',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		c28 = Action('lighthouse_push10',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		c29 = Action('lighthouse_push11',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		c30 = Action('lighthouse_push12',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		c31 = Action('lighthouse_push13',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
-		
+		c4 = Action('lighthouse_push',[], [4], [], (140, 2750), 180, 150, 0, 0, 0, 0, 0, True)
+		c5 = Action('lighthouse_walk',[], [4], [], (130, 2750), 180, 150, 0, 0, 0, 0, 0, True)
+		c32 = Action('lighthouse_walk_back',[], [0], [], (140, 2750), 180, 150, 0, 0, 0, 0, 0, True)
+		'''c4 = Action('lighthouse_push1',[], [4], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)
+		c5 = Action('lighthouse_walk',[], [4], [], (400, 1000), 90, 150, 0, 0, 0, 0, 0, True)
+		c32 = Action('lighthouse_walk_back',[], [0], [], (400, 800), 90, 150, 0, 0, 0, 0, 0, True)'''
+				
 
 		#Weathervane
-		#c6 = Action('weathervane_push',[], [11], [], (1955, 2800), 270, 150, 0, 0, 0, 0, 0, True) 
-		c6 = Action('weathervane_push',[], [11], [], (400, 1200), 90, 150, 0, 0, 0, 0, 0, True)
-		c7 = Action('weathervane_walk',[], [0], [], (400, 1600), 90, 150, 0, 0, 0, 0, 0, True)
+		c6 = Action('weathervane_push',[], [11], [], (1920, 2850), 90, 150, 0, 0, 0, 0, 0, True)
+		c7 = Action('weathervane_walk',[], [0], [], (1920, 2050), 90, 150, 0, 0, 0, 0, 0, True) 
+		#c6 = Action('weathervane_push',[], [11], [], (400, 1200), 90, 150, 0, 0, 0, 0, 0, True)
+		#c7 = Action('weathervane_walk',[], [0], [], (400, 1600), 90, 150, 0, 0, 0, 0, 0, True)
 
 		#flag
-		c8 =  Action('flag',[], [12], [], (400, 2000), 90, 150, 0, 0, 0, 0, 0, True)
+		#c8 =  Action('flag',[], [12], [], (400, 2000), 90, 150, 0, 0, 0, 0, 0, True)
+		c8 =  Action('flag',[], [12], [], (900, 2850), 0, 150, 0, 0, 0, 0, 0, True)
 		
 		#take_out_cup
 		#c3 = put_fuc()
@@ -235,7 +227,7 @@ def setting(mode,cup_color):
 
 		#demo_path = [grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc(),grab_fuc()]
 		#demo_path = [put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc(),put_fuc()]
-		demo_path = [c4,c5,c6,c7,c8]
+		demo_path = [c6,c7,c4,c5,c32,c8]
 		'''c20,c21,c22,c23,c24,c25,c26,c27,c28,c29,c30,'''
 		go_home_path = [c1]
 

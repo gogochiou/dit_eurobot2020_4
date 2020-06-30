@@ -333,9 +333,9 @@ int main(int argc, char **argv){
 
 				/*mission,goap*/
 				count1 ++ ;
-				if(action_done == true && count1<3){
+				/*if(action_done == true && count1<100){
 					action_done = false;
-				}
+				}*/
 				
 				goap_srv.request.pos={};
 				goap_srv.request.time = (now_time - begin_time).toSec();
@@ -349,9 +349,9 @@ int main(int argc, char **argv){
 				goap_srv.request.pos.push_back(my_pos_x);
 				goap_srv.request.pos.push_back(my_pos_y); 
 				goap_srv.request.my_degree = my_degree;
-				/*if(action_done){
+				if(action_done){
 					action_done = false;
-				}*/
+				}
 				
 				if(client_goap.call(goap_srv)){  
 					movement_from_goap[0]=goap_srv.response.ST2[0];
@@ -383,7 +383,12 @@ int main(int argc, char **argv){
 				desire_movement = act.Movement();
 
 				if (at_pos(my_pos_x, my_pos_y, my_degree,  desire_pos_x, desire_pos_y, desire_angle, margin, angle_margin)){
-					robot = RobotState::AT_POS;
+					/*if(goap_srv.response.mission_name == "lighthouse_walk"){
+						robot = RobotState::ON_THE_WAY;
+					}
+					else{*/
+						robot = RobotState::AT_POS;
+					//}
 				}
 				else{
 					robot = RobotState::ON_THE_WAY;
@@ -403,17 +408,17 @@ int main(int argc, char **argv){
 							rx1 = desire_movement[1];
 							ROS_INFO("mission1 : %d",desire_movement[1]);
 						}
-						if(execute_status == 1 && count1 >3 && at_pos(my_pos_x, my_pos_y, my_degree,  desire_pos_x, desire_pos_y, desire_angle, margin, angle_margin)){
+						if(execute_status == 1 && count1 >100 && at_pos(my_pos_x, my_pos_y, my_degree,  desire_pos_x, desire_pos_y, desire_angle, margin, angle_margin)){
 							action_done = true;
-							ROS_INFO("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
 							count1 = 0;
 						}
 						break;
 					}
 					case RobotState::ON_THE_WAY:{
-						if(goap_srv.response.mission_name != "weathervane_walk" && goap_srv.response.mission_name != "weathervane_walk"){
+						if( (goap_srv.response.mission_name != "weathervane_walk") && (goap_srv.response.mission_name != "lighthouse_walk") && (goap_srv.response.mission_name != "lighthouse_walk_back") ){
 							rx0 = 0;
 							rx1 = 0;
+							ROS_INFO("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
 						}
 						if(client_path.call(path_srv)){
 							ROS_INFO("%d", path_srv.request.goal_pos_x);
