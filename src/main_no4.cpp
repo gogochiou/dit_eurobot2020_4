@@ -121,9 +121,11 @@ int r1 =0;
 int r2 =0;
 int r3 =0;
 
-int my_pos_x=900;
-int my_pos_y=2700;
-int my_degree=0;
+/*int my_pos_x=900;
+int my_pos_y=2700;*/
+int my_pos_x=400;
+int my_pos_y=400;
+int my_degree=100000;
 
 int switch_mode_distance = 4000000;//square
 int distance_square = 0;
@@ -172,7 +174,7 @@ void sub_class::ST1_sub_callback(const std_msgs::Int32MultiArray::ConstPtr& msg)
 	my_pos_x = msg->data[0] ;
 	my_pos_y = msg->data[1] ;
 	my_degree = msg->data[2] ;
-	//ROS_INFO("get data");
+	/*ROS_INFO("%d",my_degree);*/
 }
 
 void sub_class::ST2_sub_callback(const std_msgs::Int32MultiArray::ConstPtr& msg){
@@ -242,9 +244,9 @@ int main(int argc, char **argv){
 	
 
 	while(ros::ok()){
-		fordelay++;
+		/*fordelay++;*/
 		Status stat;
-		if(status_fromgui.data == 4 && fordelay > 500000){
+		if(status_fromgui.data == 4 && my_degree < 1000/*fordelay > 500000*/){
 			stat  = static_cast<Status>(5);
 			status_fromgui.data = 5;
 		}
@@ -268,8 +270,8 @@ int main(int argc, char **argv){
 
             case Status::SET_INITIAL_POS:   //2
                 r0 = 0x1000;
-                r1 = 640;
-                r2 = 95;
+                r1 = 400;
+                r2 = 400;
                 r3 = 90;
                 break;            
             case Status::STARTING_SCRIPT:   //3
@@ -277,7 +279,7 @@ int main(int argc, char **argv){
                 r1 = 0;
                 r2 = 0;
                 r3 = 0;
-                fordelay = 0;
+                //fordelay = 0;
                 break;
 
             case Status::READY:{    //4
@@ -331,6 +333,9 @@ int main(int argc, char **argv){
 
 				/*mission,goap*/
 				count1 ++ ;
+				if(action_done == true && count1<3){
+					action_done = false;
+				}
 				
 				goap_srv.request.pos={};
 				goap_srv.request.time = (now_time - begin_time).toSec();
@@ -344,9 +349,9 @@ int main(int argc, char **argv){
 				goap_srv.request.pos.push_back(my_pos_x);
 				goap_srv.request.pos.push_back(my_pos_y); 
 				goap_srv.request.my_degree = my_degree;
-				if(action_done){
+				/*if(action_done){
 					action_done = false;
-				}
+				}*/
 				
 				if(client_goap.call(goap_srv)){  
 					movement_from_goap[0]=goap_srv.response.ST2[0];
@@ -386,6 +391,10 @@ int main(int argc, char **argv){
 
 				switch (robot){
 					case RobotState::AT_POS:{
+						r0 = 0x5000;
+						r1 = 0;
+						r2 = 0;
+						r3 = 0;
 						if(desire_movement[0] != -1){
 							rx0 = desire_movement[0];
 							ROS_INFO("mission1 : %d",desire_movement[0]);
@@ -394,16 +403,18 @@ int main(int argc, char **argv){
 							rx1 = desire_movement[1];
 							ROS_INFO("mission1 : %d",desire_movement[1]);
 						}
-						if(execute_status == 1 && count1 >100 && at_pos(my_pos_x, my_pos_y, my_degree,  desire_pos_x, desire_pos_y, desire_angle, margin, angle_margin)){
+						if(execute_status == 1 && count1 >3 && at_pos(my_pos_x, my_pos_y, my_degree,  desire_pos_x, desire_pos_y, desire_angle, margin, angle_margin)){
 							action_done = true;
-							ROS_INFO("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+							ROS_INFO("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
 							count1 = 0;
 						}
 						break;
 					}
 					case RobotState::ON_THE_WAY:{
-						rx0 = 0;
-						rx1 = 0;
+						if(goap_srv.response.mission_name != "weathervane_walk" && goap_srv.response.mission_name != "weathervane_walk"){
+							rx0 = 0;
+							rx1 = 0;
+						}
 						if(client_path.call(path_srv)){
 							ROS_INFO("%d", path_srv.request.goal_pos_x);
 							ROS_INFO("%d", path_srv.request.goal_pos_y);
@@ -463,6 +474,9 @@ int main(int argc, char **argv){
         std_msgs::Int32MultiArray for_st2;
         for_st2.data.push_back(rx0);
         for_st2.data.push_back(rx1);
+        for_st2.data.push_back(0);
+        for_st2.data.push_back(0);
+        
 		
 		sub.status_pub.publish(status_fromgui);
 		sub.pub_st1.publish(for_st1);
