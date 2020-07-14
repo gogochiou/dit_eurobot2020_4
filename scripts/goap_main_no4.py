@@ -40,7 +40,7 @@ class set_frommain:
 	setting_finish = 0 
 	cup_color = [0, 0, 0, 0, 0]  # <---
 
-go_home_time = 3000000
+go_home_time = 300
 #path_done = False
 north = 1
 south = 2

@@ -121,13 +121,13 @@ int r1 =0;
 int r2 =0;
 int r3 =0;
 
-/*int my_pos_x=900;
-int my_pos_y=2700;*/
-int my_pos_x=400;
-int my_pos_y=400;
+int my_pos_x=970;
+int my_pos_y=2854;
+/*int my_pos_x=400;
+int my_pos_y=400;*/
 int my_degree=100000;
 
-int switch_mode_distance = 4000000;//square
+int switch_mode_distance = 40000;//square
 int distance_square = 0;
 
 int mode0 = 0;
@@ -217,8 +217,8 @@ int main(int argc, char **argv){
 	
 
 	//初始值
-	int margin = 50;
-    int angle_margin = 10;
+	int margin = 20;
+    int angle_margin = 20;
 
 	bool action_done = false;
 
@@ -269,17 +269,25 @@ int main(int argc, char **argv){
                 break;
 
             case Status::SET_INITIAL_POS:   //2
-                r0 = 0x1000;
-                r1 = 400;
-                r2 = 400;
-                r3 = 90;
-                break;            
-            case Status::STARTING_SCRIPT:   //3
-                r0 = 0x2000;
+                /*r0 = 0x1000;
+                r1 = my_pos_x;
+                r2 = my_pos_y;
+                r3 = 180;*/
+                r0 = 0x5000;
                 r1 = 0;
                 r2 = 0;
                 r3 = 0;
+                break;            
+            case Status::STARTING_SCRIPT:   //3
+                /*r0 = 0x2000;
+                r1 = 0;
+                r2 = 0;
+                r3 = 0;*/
                 //fordelay = 0;
+                r0 = 0x5000;
+                r1 = 0;
+                r2 = 0;
+                r3 = 0;
                 break;
 
             case Status::READY:{    //4
@@ -319,7 +327,7 @@ int main(int argc, char **argv){
 					count_time =1;
 				}
 				now_time =ros::Time::now();
-				//ROS_INFO("%f", (now_time - begin_time).toSec());
+				ROS_INFO("%f", (now_time - begin_time).toSec());
 				
 				/*path*/
 				path_srv.request.my_pos_x = my_pos_x;
@@ -387,7 +395,8 @@ int main(int argc, char **argv){
 						robot = RobotState::ON_THE_WAY;
 					}
 					else{*/
-						robot = RobotState::AT_POS;
+					robot = RobotState::AT_POS;
+					ROS_INFO("at pos : true");
 					//}
 				}
 				else{
@@ -396,6 +405,7 @@ int main(int argc, char **argv){
 
 				switch (robot){
 					case RobotState::AT_POS:{
+						ROS_INFO("hahaahhahahahahahahahahahahahhahahahahhahahahhaahahahhahahahaha");
 						r0 = 0x5000;
 						r1 = 0;
 						r2 = 0;
@@ -415,15 +425,15 @@ int main(int argc, char **argv){
 						break;
 					}
 					case RobotState::ON_THE_WAY:{
-						if( (goap_srv.response.mission_name != "weathervane_walk") && (goap_srv.response.mission_name != "lighthouse_walk") && (goap_srv.response.mission_name != "lighthouse_walk_back") ){
+						if( (goap_srv.response.mission_name != "weathervane_walk1") && (goap_srv.response.mission_name != "weathervane_walk2") && (goap_srv.response.mission_name != "weathervane_walk3")&& (goap_srv.response.mission_name != "weathervane_walk4") && (goap_srv.response.mission_name != "weathervane_walk5") && (goap_srv.response.mission_name != "lighthouse_walk") && (goap_srv.response.mission_name != "lighthouse_walk_back") ){
 							rx0 = 0;
 							rx1 = 0;
-							ROS_INFO("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+							//ROS_INFO("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
 						}
 						if(client_path.call(path_srv)){
 							ROS_INFO("%d", path_srv.request.goal_pos_x);
 							ROS_INFO("%d", path_srv.request.goal_pos_y);
-							//ROS_INFO("%lf", path_srv.response.degree); //float
+							ROS_INFO("path gived degree : %lf", path_srv.response.degree); //float
 						}
 						else{
 							ROS_ERROR("Failed to call path_plan");
@@ -447,7 +457,7 @@ int main(int argc, char **argv){
 							ROS_INFO("SPEED_MODE");
 							r0 = 0x3000;
 							r1 = desire_speed;
-							r2 = my_degree;
+							r2 = path_srv.response.degree;
 							r3 = 0;
 							ROS_INFO("%d", r1);
 							ROS_INFO("%d", r2);

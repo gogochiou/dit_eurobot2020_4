@@ -12,7 +12,7 @@ using namespace std;
 
 #define mazeSizeX 41
 #define mazeSizeY 61
-#define robotSize 9
+#define robotSize 3
 
 void build_maze(int maze[mazeSizeX][mazeSizeY])
 {
@@ -29,21 +29,21 @@ void build_maze(int maze[mazeSizeX][mazeSizeY])
     for(int i = 0; i < mazeSizeX; i++)
     {
         maze[i][0] = 0;
-        maze[i][1] = 0;
-        maze[i][2] = 0;
-        /*maze[i][mazeSizeY-1] = 0;
-        maze[i][mazeSizeY-2] = 0;
-        maze[i][mazeSizeY-3] = 0;*/
+        //maze[i][1] = 0;
+        //maze[i][2] = 0;
+        maze[i][mazeSizeY-1] = 0;
+        //maze[i][mazeSizeY-2] = 0;
+        //maze[i][mazeSizeY-3] = 0;
     }
     //left and right walls
     for(int i = 0; i < mazeSizeY; i++)
     {
         maze[0][i] = 0;
-        maze[1][i] = 0;
-        maze[2][i] = 0;
-        /*maze[mazeSizeX-1][i] = 0;
-        maze[mazeSizeX-2][i] = 0;
-        maze[mazeSizeX-3][i] = 0;*/
+        //maze[1][i] = 0;
+        //maze[2][i] = 0;
+        maze[mazeSizeX-1][i] = 0;
+        //maze[mazeSizeX-2][i] = 0;
+        //maze[mazeSizeX-3][i] = 0;
     }
 }
 
@@ -675,11 +675,11 @@ bool add(main_loop::path::Request  &req,
     int obstacle_b[2] = {big_to_small_maze(req.enemy2_x),big_to_small_maze(req.enemy2_y)};//<---from camera
     int obstacle_c[2] = {big_to_small_maze(req.ally_x),big_to_small_maze(req.ally_y)};//<---from camera   
     int start_pos[2] = {big_to_small_maze(req.my_pos_x),big_to_small_maze(req.my_pos_y)};//<---my_pos
-    /*ROS_INFO("start x : %d",start_pos[0]);
-    ROS_INFO("start y : %d",start_pos[1]);*/
+    ROS_INFO("start x : %d",start_pos[0]);
+    ROS_INFO("start y : %d",start_pos[1]);
     int goal_pos[2] = {big_to_small_maze(req.goal_pos_x),big_to_small_maze(req.goal_pos_y)};//<---goap 
-    /*ROS_INFO("goal x : %d",goal_pos[0]);
-    ROS_INFO("goal y : %d",goal_pos[1]);*/
+    ROS_INFO("goal x : %d",goal_pos[0]);
+    ROS_INFO("goal y : %d",goal_pos[1]);
     bool blocked = false;
     bool is_blocked_a = build_obstacles(obstacle_a, robotSize, maze, 0, goal_pos);
     bool is_blocked_b = build_obstacles(obstacle_b, robotSize, maze, 0, goal_pos);
